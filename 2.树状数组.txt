@@ -1,0 +1,28 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+#define MAXN 50005
+int tree[MAXN];
+int lowbit(int x)
+{
+	return x&(-x);
+}
+//单点修改
+inline void update(int i,int x)
+{
+	for(int pos=i;pos<MAXN;pos+=lowbit(pos))
+		tree[pos]+=x;
+}
+//查询前n项和
+inline int query(int n)
+{
+	int ans=0;
+	for(int pos=n;pos!=0;pos-=lowbit(pos))
+		ans+=tree[pos];
+	return ans;
+}
+//区间查询
+inline int query(int a,int b)
+{
+	return query(b)-query(a-1);
+}
