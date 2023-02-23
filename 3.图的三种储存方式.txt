@@ -1,0 +1,54 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+#define MAXN 5005
+int mat[MAXN][MAXN];
+vector<Edge>edges;
+//存图-邻接矩阵
+inline void add(int u,int v,int w)
+{
+	mat[u][v]=w;
+	mat[v][u]=w;
+}
+//存图-邻接表
+struct Edge
+{
+	int to,w;
+};
+inline void add(int from,int to,int w)
+{
+	Edge e={to,w};
+	edges[from].push_back(e);
+}
+//无向图调用两次add()
+inline void add2(int u,int v,int w)
+{
+	add(u,v,w);
+	add(v,u,w);
+}
+//链式前向星-用数组模拟链表
+struct Edge
+{
+	int to,w,next;
+}edges[MAXN];
+int head[MAXN]={0},cnt=0;//以某个点为起点的最后一条边的编号,cnt为当前边的编号，初始值都是0
+inline void add(int from,int to,int w)
+{
+	edges[++cnt].w=w;
+	edges[cnt].to=to;
+	edges[cnt].next=head[from];//cnt编号边的起点的上一个边的编号
+	head[from]=cnt;
+}
+int main()
+{
+	//遍历数组遍历图
+	for(int i=0;i<edges[2].size();i++)
+		printf("%d ",edges[2][i].to);
+	//也可以这么写
+	for(auto &&e:edges[2])
+		printf("%d ",e.to);
+	//遍历链式前向星-打印二号顶点能到达的所有点
+	for(int e=head[2];e!=0;e=edges[e].next)
+		printf("%d ",edges[e].to);
+	return 0;
+}
